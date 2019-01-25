@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  brozzler:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    security_opt:
+      - seccomp=chrome.json
+    restart: always
+    links:
+      - db
+    environment:
+      BROZZLER_RETHINKDB_SERVERS: 'db'
+    ports:
+      - 8880:8880
+      - 8881:8881
+
+  db:
+    image: rethinkdb
+    restart: always
+    volumes:
+      - rethinkdb_data:/data
+
+volumes:
+   rethinkdb_data:
+
